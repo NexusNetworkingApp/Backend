@@ -1,31 +1,28 @@
-version: '3'
+version: '3.3'
 
 services:
   db:
     image: mysql
-    container_name: mysql-db-container
     volumes:
       - $HOME/srv/mysql:/var/lib/mysql
     environment:
-      MYSQL_DATABASE: nexus_db
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_USER: root
-      MYSQL_PASSWORD: password
+      - MYSQL_DATABASE=nexus_db
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=password
     expose:
       - 3306:3306
     ports:
-      - 3306:3306
+      - "3306:3306"
     restart: always
 
   app:
     build: .
-    container_name: app-container
     ports:
-      - 8080:8080
+      - "8080:8080"
     environment:
       - MYSQL_DATABASE=nexus_db
-      - MYSQL_HOST=mysql-db-container
-      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_HOST=host.docker.internal
       - MYSQL_USER=root
       - MYSQL_PASSWORD=password
     depends_on:
