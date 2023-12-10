@@ -8,6 +8,8 @@ import com.nexus.api.data.IndividualRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 
 @Service
 public class IndividualService {
@@ -42,5 +44,9 @@ public class IndividualService {
         individualRepository.deleteById(individualId);
     }
 
+    public Boolean verifyIndividual(String email, String password) {
+        Optional<Individual> individualOptional = individualRepository.findByEmailAndPasswordHash(email, password);
+        return individualOptional.isPresent();
+    }
 
 }
