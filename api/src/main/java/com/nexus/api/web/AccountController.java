@@ -3,6 +3,8 @@ package com.nexus.api.web;
 import com.nexus.api.business.AccountService;
 import com.nexus.api.business.IndividualService;
 import com.nexus.api.business.OrganizationService;
+import com.nexus.api.data.Account;
+import com.nexus.api.data.AccountType;
 import com.nexus.api.data.Individual;
 import com.nexus.api.data.Organization;
 import org.apache.coyote.Response;
@@ -59,6 +61,21 @@ public class AccountController {
         }
     }
 
+    @GetMapping("/individual-info/{accountId}")
+    public ResponseEntity<Individual> getIndividualInfo(@PathVariable Long accountId) {
+        try {
+            Individual individual = accountService.findIndividualByAccountId(accountId);
+
+            if (individual != null) {
+                return new ResponseEntity<>(individual, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
 
 
@@ -93,6 +110,46 @@ public class AccountController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
         }
     }
+
+    @GetMapping("/organization-info/{accountId}")
+    public ResponseEntity<Organization> getOrganizationInfo(@PathVariable Long accountId) {
+        try {
+            Organization organization = accountService.findOrganizationByAccountId(accountId);
+
+            if (organization != null) {
+                return new ResponseEntity<>(organization, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // General account endpoints
+    @GetMapping("/info/{accountType}/{email}")
+    public ResponseEntity<Account> getAccountInfo(@PathVariable String accountType, @PathVariable String email) {
+        try {
+            // Convert the account type String to the corresponding enum value
+            AccountType type = AccountType.valueOf(accountType.toUpperCase());
+
+            // Call the service to retrieve the account information
+            Account account = accountService.findAccountByTypeAndEmail(type, email);
+
+            if (account != null) {
+                return new ResponseEntity<>(account, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (IllegalArgumentException e) {
+            // Handle invalid account type
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            // Handle other exceptions
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
 
 }
