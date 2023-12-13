@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 @Repository
 public interface AccountRepository extends JpaRepository<Account, Long> {
 
@@ -20,4 +22,9 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
     @Query("SELECT a.organization FROM Account a WHERE a.accountId = :accountId")
     Organization findOrganizationByAccountId(@Param("accountId") Long accountId);
+
+    List<Account> findAllByAccountIdNot(Long excludedAccountId);
+
+    List<Account> findAllByAccountType(String accountType);
+
 }

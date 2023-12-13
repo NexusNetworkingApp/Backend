@@ -2,11 +2,9 @@ package com.nexus.api.web;
 
 import com.nexus.api.business.AccountService;
 import com.nexus.api.business.IndividualService;
+import com.nexus.api.business.LikeService;
 import com.nexus.api.business.OrganizationService;
-import com.nexus.api.data.Account;
-import com.nexus.api.data.AccountType;
-import com.nexus.api.data.Individual;
-import com.nexus.api.data.Organization;
+import com.nexus.api.data.*;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,12 +19,14 @@ public class AccountController {
     private final IndividualService individualService;
     private final OrganizationService organizationService;
     private final AccountService accountService;
+    private final LikeService likeService;
 
     @Autowired
-    public AccountController(IndividualService individualService, OrganizationService organizationService, AccountService accountService) {
+    public AccountController(IndividualService individualService, OrganizationService organizationService, AccountService accountService, LikeService likeService) {
         this.individualService = individualService;
         this.organizationService = organizationService;
         this.accountService = accountService;
+        this.likeService = likeService;
     }
 
     // Individual account endpoints
@@ -73,6 +73,18 @@ public class AccountController {
             }
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/individual-discover/{accountId}")
+    public ResponseEntity<Account> getRandomAccount(@PathVariable Long accountId) {
+        try {
+            // Get a random account that doesn't have the same ID as the provided accountId
+            Account randomAccount = accountService.getRandomAccount(accountId);
+
+            return ResponseEntity.ok(randomAccount);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
@@ -126,6 +138,18 @@ public class AccountController {
         }
     }
 
+    @GetMapping("/organization-discover")
+    public ResponseEntity<Account> getRandomIndividualAccount() {
+        try {
+            // Get a random account w/ individual accountType
+            Account randomIndividualAccount = accountService.getRandomIndividualAccount();
+
+            return ResponseEntity.ok(randomIndividualAccount);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     // General account endpoints
     @GetMapping("/info/{accountType}/{email}")
     public ResponseEntity<Account> getAccountInfo(@PathVariable String accountType, @PathVariable String email) {
@@ -150,6 +174,18 @@ public class AccountController {
         }
     }
 
+    @PostMapping("/create-like")
+    public ResponseEntity<Void> createLike(@RequestBody Like like) {
+        try {
+            likeService.createLike(like);
+
+            // Return a success response with no content
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (Exception e) {
+            // Handle exceptions and return an error response
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 
 }

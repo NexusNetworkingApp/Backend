@@ -8,7 +8,9 @@ import com.nexus.api.data.IndividualRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 
 @Service
@@ -49,4 +51,17 @@ public class IndividualService {
         return individualOptional.isPresent();
     }
 
+    public Individual getRandomIndividual() {
+        List<Individual> individuals = individualRepository.findAll();
+
+        if (individuals.isEmpty()) {
+            // Handle the case where no suitable individual is found
+            return null;
+        }
+
+        // Select a random account from the list
+        Random random = new Random();
+        int randomIndex = random.nextInt(individuals.size());
+        return individuals.get(randomIndex);
+    }
 }

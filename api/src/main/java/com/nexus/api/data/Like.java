@@ -40,6 +40,12 @@ public class Like {
         this.prompt = prompt;
     }
 
+    public Like(Account sender, Account receiver, String prompt) {
+        this.sender = sender;
+        this.receiver = receiver;
+        this.prompt = LikePrompt.valueOf(prompt);
+    }
+
     public Like() {
 
     }
