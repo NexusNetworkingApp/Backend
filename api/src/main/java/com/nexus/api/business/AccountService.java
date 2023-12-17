@@ -55,16 +55,27 @@ public class AccountService {
     }
 
     public Account getRandomIndividualAccount() {
-        List<Account> accounts = accountRepository.findAllByAccountType("INDIVIDUAL");
+        List<Account> individualAccounts = accountRepository.findByAccountType(AccountType.INDIVIDUAL);
 
-        if (accounts.isEmpty()) {
-            // Handle the case where no suitable account is found
+        if (individualAccounts.isEmpty()) {
+            // Handle the case where no individual account is found
             return null;
         }
 
-        // Select a random account from the list
+        // Select a random individual account from the list
         Random random = new Random();
-        int randomIndex = random.nextInt(accounts.size());
-        return accounts.get(randomIndex);
+        int randomIndex = random.nextInt(individualAccounts.size());
+        return individualAccounts.get(randomIndex);
+    }
+
+    public Account findById(Long senderId) {
+        return accountRepository.findById(senderId).orElse(null);
+    }
+
+    public List<Account> getStandouts() {
+        // Implement logic to retrieve top individual accounts by likes received
+        // This might involve querying the database or another data source
+        // Adjust the logic based on your application's needs
+        return accountRepository.findTop5ByAccountTypeOrderByReceivedLikesDesc(AccountType.INDIVIDUAL);
     }
 }

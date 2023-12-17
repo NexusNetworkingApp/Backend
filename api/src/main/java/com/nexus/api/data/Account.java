@@ -2,6 +2,8 @@ package com.nexus.api.data;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "account")
 public class Account {
@@ -21,6 +23,9 @@ public class Account {
     @ManyToOne
     @JoinColumn(name = "organization_id", referencedColumnName = "organization_id")
     private Organization organization;
+
+    @OneToMany(mappedBy = "receiver")
+    private List<Like> receivedLikes;
 
     public Account(AccountType accountType, Individual individual, Organization organization) {
         this.accountType = accountType;

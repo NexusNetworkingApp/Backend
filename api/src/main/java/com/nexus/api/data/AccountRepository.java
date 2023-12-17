@@ -27,4 +27,8 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
     List<Account> findAllByAccountType(String accountType);
 
+    List<Account> findByAccountType(AccountType accountType);
+
+    List<Account> findTop5ByAccountTypeOrderByReceivedLikesDesc(AccountType accountType);
+
 }

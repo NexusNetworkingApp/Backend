@@ -11,11 +11,13 @@ public class OrganizationService {
 
     private final OrganizationRepository organizationRepository;
     private final AccountRepository accountRepository;
+    private final JobRepository jobRepository;
 
     @Autowired
-    public OrganizationService(OrganizationRepository organizationRepository, AccountRepository accountRepository) {
+    public OrganizationService(OrganizationRepository organizationRepository, AccountRepository accountRepository, JobRepository jobRepository) {
         this.organizationRepository = organizationRepository;
         this.accountRepository = accountRepository;
+        this.jobRepository = jobRepository;
     }
 
     public Organization createOrganization (Organization organization) {
@@ -42,5 +44,9 @@ public class OrganizationService {
     public Boolean verifyOrganization(String email, String password) {
         Optional<Organization> organizationOptional = organizationRepository.findByEmailAndPasswordHash(email, password);
         return organizationOptional.isPresent();
+    }
+
+    public void postJob(Job job) {
+        jobRepository.save(job);
     }
 }
