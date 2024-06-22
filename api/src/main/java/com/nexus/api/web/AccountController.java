@@ -160,28 +160,6 @@ public class AccountController {
         }
     }
 
-    @PostMapping("/organization/post-job")
-    public ResponseEntity<String> postJob(@RequestBody Job job) {
-        try {
-            // Assuming you have a service method to handle job posting logic
-            organizationService.postJob(job);
-            return ResponseEntity.ok("Job posted successfully!");
-        } catch (Exception e) {
-            // Print the exception details to the standard error stream
-            System.err.println("Error posting job: " + e.getMessage());
-
-            // Handle exceptions and return an appropriate response
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error posting job: " + e.getMessage());
-        }
-    }
-
-    @GetMapping("/all-jobs")
-    public ResponseEntity<List<Job>> getAllJobs() {
-        List<Job> jobs = jobService.getAllJobs();
-        return ResponseEntity.ok(jobs);
-    }
-
-
     // General account endpoints
     @GetMapping("/info/{accountType}/{email}")
     public ResponseEntity<Account> getAccountInfo(@PathVariable String accountType, @PathVariable String email) {
