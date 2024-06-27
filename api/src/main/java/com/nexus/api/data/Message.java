@@ -12,11 +12,11 @@ public class Message {
     private Long messageId;
 
     @ManyToOne
-    @JoinColumn(name = "sender_id", referencedColumnName = "account_id")
+    @JoinColumn(name = "sender_id", referencedColumnName = "account_id", nullable = false)
     private Account sender;
 
     @ManyToOne
-    @JoinColumn(name = "receiver_id", referencedColumnName = "account_id")
+    @JoinColumn(name = "receiver_id", referencedColumnName = "account_id", nullable = false)
     private Account receiver;
 
     @Column(name = "content", length = 500, nullable = false)
@@ -26,14 +26,21 @@ public class Message {
     @Temporal(TemporalType.TIMESTAMP)
     private Date messageDate;
 
-    public Message(Long messageId, Account sender, Account receiver, String content, Date messageDate) {
+    @Column(name = "status", nullable = false)
+    private String status;
+
+    @Version
+    private int version;
+
+    public Message(Long messageId, Account sender, Account receiver, String content, Date messageDate, String status, int version) {
         this.messageId = messageId;
         this.sender = sender;
         this.receiver = receiver;
         this.content = content;
         this.messageDate = messageDate;
+        this.status = status;
+        this.version = version;
     }
-
 
     public Message() {
 
@@ -77,5 +84,21 @@ public class Message {
 
     public void setMessageDate(Date messageDate) {
         this.messageDate = messageDate;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 }
