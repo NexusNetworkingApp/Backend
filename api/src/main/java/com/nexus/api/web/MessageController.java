@@ -6,6 +6,7 @@ import com.nexus.api.data.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.util.Date;
 import java.util.List;
@@ -17,7 +18,6 @@ import java.util.logging.Logger;
 public class MessageController {
 
     private static final Logger logger = Logger.getLogger(MessageController.class.getName());
-
     private final AccountService accountService;
     private final MessageService messageService;
 
