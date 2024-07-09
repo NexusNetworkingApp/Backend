@@ -10,8 +10,6 @@ services:
       - MYSQL_USER=root
       - MYSQL_PASSWORD=password
       - MYSQL_ROOT_PASSWORD=password
-    expose:
-      - 3306:3306
     ports:
       - "3306:3306"
     restart: always
@@ -25,5 +23,6 @@ services:
       - MYSQL_HOST=host.docker.internal
       - MYSQL_USER=root
       - MYSQL_PASSWORD=password
+      - ZIPCODE_API_KEY=${ZIPCODE_API_KEY} # Pass ZIPCODE_API_KEY from .env file
     depends_on:
       - db

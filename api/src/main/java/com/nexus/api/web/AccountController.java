@@ -193,4 +193,30 @@ public class AccountController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+    @GetMapping("/discover")
+    public ResponseEntity<Account> discoverAccounts(
+            @RequestParam int zipCode,
+            @RequestParam int distance) {
+        try {
+            System.out.println("Discover endpoint hit with zipCode: " + zipCode + " and distance: " + distance);
+
+            List<String> zipCodesWithinRadius = accountService.findZipCodesWithinRadius(zipCode, distance);
+            System.out.println("Zip codes within radius: " + zipCodesWithinRadius);
+
+            List<Account> eligibleAccounts = accountService.findAccountsByZipCodes(zipCodesWithinRadius);
+            System.out.println("Eligible accounts: " + eligibleAccounts);
+
+            if (!eligibleAccounts.isEmpty()) {
+                Account randomAccount = accountService.getRandomAccountFromList(eligibleAccounts);
+                System.out.println("Returning random eligible account: " + randomAccount);
+                return ResponseEntity.ok(randomAccount);
+            } else {
+                System.out.println("No eligible accounts found");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }
