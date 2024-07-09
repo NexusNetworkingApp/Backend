@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -196,17 +197,26 @@ public class AccountController {
     @GetMapping("/discover")
     public ResponseEntity<Account> discoverAccounts(
             @RequestParam int zipCode,
-            @RequestParam int distance) {
+            @RequestParam int distance,
+            @RequestParam Long loggedInAccountId) {
         try {
             System.out.println("Discover endpoint hit with zipCode: " + zipCode + " and distance: " + distance);
 
+            // Fetching the zip codes within the radius
             List<String> zipCodesWithinRadius = accountService.findZipCodesWithinRadius(zipCode, distance);
             System.out.println("Zip codes within radius: " + zipCodesWithinRadius);
 
+            // Fetching eligible accounts
             List<Account> eligibleAccounts = accountService.findAccountsByZipCodes(zipCodesWithinRadius);
             System.out.println("Eligible accounts: " + eligibleAccounts);
 
+            // Exclude the logged-in account
+            eligibleAccounts = eligibleAccounts.stream()
+                    .filter(account -> !account.getAccountId().equals(loggedInAccountId))
+                    .collect(Collectors.toList());
+
             if (!eligibleAccounts.isEmpty()) {
+                // Returning a random eligible account
                 Account randomAccount = accountService.getRandomAccountFromList(eligibleAccounts);
                 System.out.println("Returning random eligible account: " + randomAccount);
                 return ResponseEntity.ok(randomAccount);
@@ -219,4 +229,5 @@ public class AccountController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
 }
