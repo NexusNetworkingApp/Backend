@@ -36,8 +36,8 @@ public class ZipCodeService {
 
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(requestBody, headers);
 
-        System.out.println("Sending request to URL: " + url);
-        System.out.println("Request body: " + requestBody);
+        // System.out.println("Sending request to URL: " + url);
+        // System.out.println("Request body: " + requestBody);
 
         ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(
                 url,

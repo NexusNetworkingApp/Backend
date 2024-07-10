@@ -21,25 +21,39 @@ public class LikeService {
         this.messageRepository = messageRepository;
     }
 
-    public void createLike (Like like) {
-        likeRepository.save(like);
+    public void createLike(Like like) {
+        try {
+            System.out.println("Saving like: " + like);
 
-        // Make the two users un-discoverable to each other
-        Incompatible newIncompatible = new Incompatible();
-        newIncompatible.setUser1(like.getReceiver());
-        newIncompatible.setUser2(like.getSender());
-        newIncompatible.setReason("Like");
-        incompatibleRepository.save(newIncompatible);
+            likeRepository.save(like);
 
-        // Save initial message sent with like
-        Message newMessage = new Message();
-        newMessage.setSender(like.getSender());
-        newMessage.setReceiver(like.getReceiver());
-        newMessage.setContent(like.getLikeMessage());
-        newMessage.setMessageDate(like.getLikeDate());
-        messageRepository.save(newMessage);
+            // Make the two users un-discoverable to each other
+            Incompatible newIncompatible = new Incompatible();
+            newIncompatible.setUser1(like.getReceiver());
+            newIncompatible.setUser2(like.getSender());
+            newIncompatible.setReason("Like");
 
+            System.out.println("Saving incompatible entry: " + newIncompatible);
+            incompatibleRepository.save(newIncompatible);
+
+            // Save initial message sent with like
+            Message newMessage = new Message();
+            newMessage.setSender(like.getSender());
+            newMessage.setReceiver(like.getReceiver());
+            newMessage.setContent(like.getLikeMessage());
+            newMessage.setMessageDate(like.getLikeDate());
+            newMessage.setStatus("SENT");
+            newMessage.setVersion(0);
+
+            System.out.println("Saving message: " + newMessage);
+            messageRepository.save(newMessage);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
     }
+
 
     public List<Like> getLikesByReceiverId(Long receiverId) {
         return likeRepository.findByReceiverAccountId(receiverId);

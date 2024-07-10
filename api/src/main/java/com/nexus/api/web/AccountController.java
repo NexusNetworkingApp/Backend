@@ -2,7 +2,6 @@ package com.nexus.api.web;
 
 import com.nexus.api.business.*;
 import com.nexus.api.data.*;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -94,7 +93,6 @@ public class AccountController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
 
     // Organization account endpoints
 
@@ -194,34 +192,30 @@ public class AccountController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
     @GetMapping("/discover")
     public ResponseEntity<Account> discoverAccounts(
             @RequestParam int zipCode,
             @RequestParam int distance,
             @RequestParam Long loggedInAccountId) {
         try {
-            System.out.println("Discover endpoint hit with zipCode: " + zipCode + " and distance: " + distance);
+            // System.out.println("Discover endpoint hit with zipCode: " + zipCode + ", distance: " + distance + ", loggedInAccountId: " + loggedInAccountId);
 
             // Fetching the zip codes within the radius
             List<String> zipCodesWithinRadius = accountService.findZipCodesWithinRadius(zipCode, distance);
-            System.out.println("Zip codes within radius: " + zipCodesWithinRadius);
+            // System.out.println("Zip codes within radius: " + zipCodesWithinRadius);
 
             // Fetching eligible accounts
-            List<Account> eligibleAccounts = accountService.findAccountsByZipCodes(zipCodesWithinRadius);
-            System.out.println("Eligible accounts: " + eligibleAccounts);
-
-            // Exclude the logged-in account
-            eligibleAccounts = eligibleAccounts.stream()
-                    .filter(account -> !account.getAccountId().equals(loggedInAccountId))
-                    .collect(Collectors.toList());
+            List<Account> eligibleAccounts = accountService.findAccountsByZipCodes(zipCodesWithinRadius, loggedInAccountId);
+            // System.out.println("Eligible accounts: " + eligibleAccounts);
 
             if (!eligibleAccounts.isEmpty()) {
                 // Returning a random eligible account
                 Account randomAccount = accountService.getRandomAccountFromList(eligibleAccounts);
-                System.out.println("Returning random eligible account: " + randomAccount);
+                // System.out.println("Returning random eligible account: " + randomAccount);
                 return ResponseEntity.ok(randomAccount);
             } else {
-                System.out.println("No eligible accounts found");
+                // System.out.println("No eligible accounts found");
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
         } catch (Exception e) {
@@ -229,5 +223,6 @@ public class AccountController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
 
 }

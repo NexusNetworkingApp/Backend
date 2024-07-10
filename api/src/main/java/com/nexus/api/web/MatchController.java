@@ -33,15 +33,18 @@ public class MatchController {
     @PostMapping("/create-like")
     public ResponseEntity<Void> createLike(@RequestBody Like like) {
         try {
+            System.out.println("Received like request: " + like);
+
             likeService.createLike(like);
 
             // Return a success response with no content
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (Exception e) {
-            // Handle exceptions and return an error response
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
     @GetMapping("/fetch-likes/{accountId}")
     public ResponseEntity<List<Like>> fetchLikes(@PathVariable Long accountId) {
