@@ -1,4 +1,4 @@
-package com.nexus.api.web;
+package main.java.com.nexus.api.web;
 
 import com.nexus.api.business.AccountService;
 import com.nexus.api.business.MessageService;

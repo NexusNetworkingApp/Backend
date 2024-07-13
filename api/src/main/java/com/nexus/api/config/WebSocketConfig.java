@@ -1,4 +1,4 @@
-package com.nexus.api.config;
+package main.java.com.nexus.api.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Configuration;

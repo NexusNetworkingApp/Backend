@@ -1,4 +1,4 @@
-package com.nexus.api.business;
+package main.java.com.nexus.api.business;
 
 import com.nexus.api.data.IncompatibleRepository;
 import org.springframework.beans.factory.annotation.Autowired;

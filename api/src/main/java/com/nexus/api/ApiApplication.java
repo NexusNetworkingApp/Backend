@@ -1,4 +1,4 @@
-package com.nexus.api;
+package main.java.com.nexus.api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
