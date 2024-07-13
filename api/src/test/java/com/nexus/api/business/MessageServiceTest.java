@@ -1,4 +1,4 @@
-package com.nexus.api.business;
+package test.java.com.nexus.api.business;
 
 import com.nexus.api.data.Message;
 import com.nexus.api.data.MessageRepository;
@@ -28,15 +28,13 @@ public class MessageServiceTest {
     private MessageRepository messageRepository;
 
     private Message message;
-    private Account sender;
-    private Account receiver;
 
     @BeforeEach
     public void setup(){
-        sender = new Account();
+        Account sender = new Account();
         sender.setAccountId(1L);
 
-        receiver = new Account();
+        Account receiver = new Account();
         receiver.setAccountId(2L);
 
         message = new Message();

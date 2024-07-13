@@ -1,4 +1,4 @@
-package com.nexus.api.data;
+package main.java.com.nexus.api.data;
 
 import jakarta.persistence.*;
 import java.util.Date;

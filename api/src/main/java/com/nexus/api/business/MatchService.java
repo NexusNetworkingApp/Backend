@@ -1,4 +1,4 @@
-package com.nexus.api.business;
+package main.java.com.nexus.api.business;
 
 import com.nexus.api.data.Like;
 import com.nexus.api.data.LikeRepository;

@@ -1,4 +1,4 @@
-package com.nexus.api.business;
+package main.java.com.nexus.api.business;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,9 +35,6 @@ public class ZipCodeService {
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(requestBody, headers);
-
-        // System.out.println("Sending request to URL: " + url);
-        // System.out.println("Request body: " + requestBody);
 
         ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(
                 url,

@@ -1,4 +1,4 @@
-package com.nexus.api.web;
+package main.java.com.nexus.api.web;
 
 import com.nexus.api.business.*;
 import com.nexus.api.data.*;
@@ -19,20 +19,12 @@ public class AccountController {
     private final IndividualService individualService;
     private final OrganizationService organizationService;
     private final AccountService accountService;
-    private final LikeService likeService;
-    private final MatchService matchService;
-    private final MessageService messageService;
-    private final JobService jobService;
 
     @Autowired
     public AccountController(IndividualService individualService, OrganizationService organizationService, AccountService accountService, LikeService likeService, MatchService matchService, MessageService messageService, JobService jobService) {
         this.individualService = individualService;
         this.organizationService = organizationService;
         this.accountService = accountService;
-        this.likeService = likeService;
-        this.matchService = matchService;
-        this.messageService = messageService;
-        this.jobService = jobService;
     }
 
     // Individual account endpoints

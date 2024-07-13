@@ -1,4 +1,4 @@
-package com.nexus.api.config;
+package main.java.com.nexus.api.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

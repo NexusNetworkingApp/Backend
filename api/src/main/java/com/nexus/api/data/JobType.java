@@ -1,4 +1,4 @@
-package com.nexus.api.data;
+package main.java.com.nexus.api.data;
 
 public enum JobType {
     INTERNSHIP,
